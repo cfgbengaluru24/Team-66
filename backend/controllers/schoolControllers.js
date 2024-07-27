@@ -98,7 +98,9 @@ export const addStudent = async (req, res) => {
 
 export const retrieveSchoolData = async (req, res) => {
     try {
-        const  schoolId  = req.user.id;
+        console.log("calling her ");
+        const schoolId = req.user.id;
+        console.log(schoolId);
 
         console.log(schoolId)
 

@@ -3,6 +3,8 @@ import Footer from "@/app/components/Footer/page";
 import Navbar from "@/app/components/Navbar/page";
 import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
+import { ToastContainer, toast } from "react-toastify"; // Import ToastContainer and toast
+import "react-toastify/dist/ReactToastify.css"; // Import CSS for Toastify
 
 const AddStudentPage = () => {
   const [formData, setFormData] = useState({
@@ -99,14 +101,7 @@ const AddStudentPage = () => {
               : "Family income should be a number",
           });
           break;
-        case "grade":
-          setErrors({
-            ...errors,
-            grade: /^[A-F]$/.test(value)
-              ? ""
-              : "Grade should be a letter from A to F",
-          });
-          break;
+
         case "percentage":
           setErrors({
             ...errors,
@@ -137,11 +132,10 @@ const AddStudentPage = () => {
       errors.studentName ||
       errors.familyIncome ||
       errors.studentImage ||
-      errors.grade ||
       errors.percentage ||
       errors.studentId
     ) {
-      alert("Please fix the errors in the form");
+      toast.error("Please fix the errors in the form");
       return;
     }
 
@@ -174,7 +168,7 @@ const AddStudentPage = () => {
       const result = await response.json();
 
       if (result.success) {
-        alert("Student data has been successfully submitted.");
+        toast.success("Student data has been successfully submitted.");
         // Reset form
         setFormData({
           studentName: "",
@@ -187,10 +181,10 @@ const AddStudentPage = () => {
           studentId: "",
         });
       } else {
-        alert("There was an error submitting the student data.");
+        toast.error("There was an error submitting the student data.");
       }
     } catch (error) {
-      alert("There was an error connecting to the server.");
+      toast.error("There was an error connecting to the server.");
     }
   };
 
@@ -384,6 +378,7 @@ const AddStudentPage = () => {
                   Add Student
                 </button>
               </form>
+              <ToastContainer /> {/* Add ToastContainer here */}
             </div>
           </div>
         </div>
