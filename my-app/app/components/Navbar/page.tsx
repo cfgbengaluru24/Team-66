@@ -26,7 +26,7 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content bg-white rounded-box z-[1] mt-3 w-52 p-2 shadow"
           >
             <li>
-              <a>Homepage</a>
+              <a href="/">Homepage</a>
             </li>
             <li>
               <a>Portfolio</a>
@@ -38,7 +38,9 @@ const Navbar = () => {
         </div>
       </div>
       <div className="navbar-center">
-        <a className="btn btn-ghost normal-case text-xl">Aspire & Glee</a>
+        <a href="/" className="btn btn-ghost normal-case text-xl">
+          Aspire & Glee
+        </a>
       </div>
       <div className="navbar-end">
         <button className="btn btn-ghost btn-circle">
