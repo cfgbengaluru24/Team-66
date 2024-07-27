@@ -2,6 +2,7 @@
 import Footer from "@/app/components/Footer/page";
 import Navbar from "@/app/components/Navbar/page";
 import React, { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 
 // Define the Student type
 interface Student {
@@ -13,41 +14,51 @@ interface Student {
   approved: string;
 }
 
-// Mock fetch function to simulate fetching student data
-const fetchStudentData = async (): Promise<Student[]> => {
-  // Mock data; replace this with your actual data fetching logic
-  return [
-    {
-      id: 1,
-      studentName: "John Doe",
-      familyIncome: 50000,
-      studentImage: "https://via.placeholder.com/150",
-      isDisabled: "No",
-      approved: "No",
-    },
-    {
-      id: 2,
-      studentName: "Jane Smith",
-      familyIncome: 30000,
-      studentImage: "https://via.placeholder.com/150",
-      isDisabled: "Yes",
-      approved: "Yes",
-    },
-    // Add more students here
-  ];
+// Fetch function to get student data from the backend API
+const fetchStudentData = async (token: string | null): Promise<Student[]> => {
+  try {
+    const response = await fetch(
+      "http://localhost:8800/api/v1/school/retrieveSchoolData",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token in the request headers
+        },
+      }
+    );
+
+    const result = await response.json();
+    console.log(result);
+
+    if (result.success) {
+      return result.data; // Return the student data from the response
+    } else {
+      throw new Error(result.message); // Throw an error if the request fails
+    }
+  } catch (error) {
+    console.error("Error fetching student data:", error);
+    return []; // Return an empty array in case of error
+  }
 };
 
 const ViewStudentsPage = () => {
   const [students, setStudents] = useState<Student[]>([]);
+  const [cookies] = useCookies(["authToken"]); // Use react-cookie to get the token
+  const token = cookies.authToken || null; // Retrieve the token from cookies
 
   useEffect(() => {
     const getStudents = async () => {
-      const data = await fetchStudentData();
-      setStudents(data);
+      if (token) {
+        const data = await fetchStudentData(token);
+        console.log(data);
+        setStudents(data);
+      } else {
+        console.error("No authentication token found");
+      }
     };
 
     getStudents();
-  }, []);
+  }, [token]); // Add token as a dependency
 
   return (
     <div data-theme="light">
