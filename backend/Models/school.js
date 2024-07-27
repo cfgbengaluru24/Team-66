@@ -11,13 +11,13 @@ const schoolSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        email:{
-            type:String,
-            required:true,
+        email: {
+            type: String,
+            required: true,
         },
-        password:{
-            type:String,
-            required:true,
+        password: {
+            type: String,
+            required: true,
         },
         schoolRef: {
             type: String,
@@ -27,10 +27,9 @@ const schoolSchema = new mongoose.Schema(
         students: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: "student",
+                ref: "student", // Reference to the student model
             },
         ],
-        
     },
     {
         timestamps: true,
