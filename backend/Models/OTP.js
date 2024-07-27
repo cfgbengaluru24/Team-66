@@ -1,3 +1,4 @@
+// Models/OTP.js
 import mongoose from "mongoose";
 import { mailSender } from "../utils/mailSender.js";
 
@@ -23,11 +24,11 @@ OTPSchema.pre('save', async function (next) {
     try {
         // Only send email if it's a new OTP
         if (this.isNew) {
-            await mailSender(this.email, "OTP FOR VERIFICATION", this.otp.toString());
-            console.log("Mail sent successfully");
+            await mailSender(this.email, "OTP FOR VERIFICATION", `Your OTP is: ${this.otp}`);
+            console.log(`Mail sent to ${this.email} successfully`);
         }
     } catch (error) {
-        console.log("Error while sending the mail for OTP:", error.message);
+        console.error(`Error while sending the mail for OTP to ${this.email}:`, error.message);
     }
     next();
 });

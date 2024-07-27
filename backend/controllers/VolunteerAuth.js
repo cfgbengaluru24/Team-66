@@ -1,11 +1,11 @@
-import OTP from "../models/OTP.js";
+import OTP from "../Models/OTP.js";
 import OtpGenerator from "otp-generator";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken'
 import volunteer from "../Models/volunteer.js";
 
 // Function to send OTP
-export const sendOTP = async (req, res) => {
+export const sendOTP2 = async (req, res) => {
     try {
         const { email } = req.body;
         if (!email) {
@@ -55,7 +55,7 @@ export const sendOTP = async (req, res) => {
 };
 
 
-export const login=async(req,res)=>{
+export const login2=async(req,res)=>{
     try{
         const {email,password}=req.body;
 
@@ -112,10 +112,10 @@ export const login=async(req,res)=>{
 }
 
 
-export const signUp = async (req, res) => {
+export const signUp2 = async (req, res) => {
     try {
-        const { email, password} = req.body;
-        if (!email || !password) {
+        const { name, email, password,otp} = req.body;
+        if (!name || !email || !password || !otp) {
             return res.status(400).json({
                 success: false,
                 message: "Insufficient data",
@@ -158,6 +158,7 @@ export const signUp = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const profilePayload = {
             email,
+            name,
             password: hashedPassword
         };
         const volunteerDetails = await volunteer.create(profilePayload);
