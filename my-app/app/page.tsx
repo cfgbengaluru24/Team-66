@@ -1,3 +1,4 @@
+
 import Footer from "./components/Footer/page";
 import Navbar from "./components/Navbar/page";
 
@@ -6,6 +7,7 @@ export default function Home() {
     <>
       <div data-theme="light">
         <Navbar />
+        <Signup />
         <section className="carousel w-full h-screen relative">
           <div id="slide1" className="carousel-item relative w-full h-full">
             <img

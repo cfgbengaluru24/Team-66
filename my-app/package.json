@@ -2,11 +2,12 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
-  "scripts": {
+  
+ "scripts": {
   "start": "npm run dev",
   "dev": "next dev",
   "build": "next build",
-  "lint": "next lint"
+  "lint":"next lint"
 },
   "dependencies": {
     "next": "14.2.5",
