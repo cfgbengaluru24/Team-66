@@ -31,6 +31,11 @@ const StudentSchema = new mongoose.Schema(
         approved:{
             type:String,
             enum:["Yes","No"]
+        },
+        scholarShip:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"eduParent",
+            default:null,
         }
     },
     {

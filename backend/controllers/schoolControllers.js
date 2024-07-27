@@ -76,7 +76,7 @@ export const addStudent = async (req, res) => {
             });
         }
 
-        schoolDetails.students.push(savedStudent._id);
+        schoolDetails.student.push(savedStudent._id);
         await schoolDetails.save();
 
         return res.status(201).json({
@@ -103,17 +103,18 @@ export const retrieveSchoolData = async (req, res) => {
         console.log(schoolId)
 
         const schoolDetails = await school.findById(schoolId).populate({
-            path: "students",
+            path: "student",
             populate: {
                 path: "educationalStat",
             },
-        });
+        }).exec();
 
         if (!schoolDetails) {
             return res.status(404).json({ success:false,message: "School not found" });
         }
+        console.log(schoolDetails)
 
-        res.status(200).json({success:true,data:schoolDetails.students});
+        res.status(200).json({success:true,data:schoolDetails.student});
     } catch (error) {
         console.error("Error retrieving students:", error);
         res.status(500).json({ success:false,message: "Server error" });

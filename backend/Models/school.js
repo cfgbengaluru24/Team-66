@@ -24,7 +24,7 @@ const schoolSchema = new mongoose.Schema(
             required: true,
             trim: true,
         },
-        students: [
+        student: [
             {
                 type: mongoose.Schema.Types.ObjectId,
                 ref: "student", // Reference to the student model

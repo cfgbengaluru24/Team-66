@@ -8,10 +8,11 @@ const donationsSchema = new mongoose.Schema(
             ref:"student"
         },
         tenure: {
-            type: Number,
+            type: "String",
             required: true,
         },
         isExpired: {
+            type:String,
             enum:["Yes","No"],
             default:"No"
         },

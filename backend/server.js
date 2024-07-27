@@ -8,6 +8,9 @@ import dotenv from 'dotenv';
 import authenticationRoutes from './routes/auth.js';
 import schoolRoutes from './routes/school.js'
 import volunteerRoutes from './routes/volunteer.js'
+import eduParentRoutes from './routes/eduParent.js'
+import beneficiaryRoutes from './routes/beneficiary.js'
+import donorRoutes from './routes/donor.js'
 
 dotenv.config();
 
@@ -36,6 +39,10 @@ cloudinaryConnect();
 app.use('/api/v1/auth', authenticationRoutes);
 app.use('/api/v1/school', schoolRoutes);
 app.use('/api/v1/volunteer', volunteerRoutes);
+app.use('/api/v1/eduParent', eduParentRoutes);
+app.use('/api/v1/beneficiary', beneficiaryRoutes);
+app.use('/api/v1/donor', donorRoutes);
+
 
 app.get('/', (req, res) => {
   res.json({
