@@ -1,13 +1,18 @@
 import Login from "./components/loginschool/Login";
 import Navbar from "./components/Navbar/page";
 import Signup from "./components/Signupschool.tsx/signup";
+import Signupdonor from "./components/Signupdonor/Signupdonor";
+import LoginDonor from "./components/logindonor/Logindonor";
+import Inventory from "./components/inventory/inventory";
 
 export default function Home() {
   return (
     <>
       <div data-theme="light">
         <Navbar />
-        <Signup />
+        <Signupdonor />
+        <LoginDonor />
+        <Inventory />
         <section className="carousel w-full h-screen relative">
           {/* Carousel Items */}
           <div id="slide1" className="carousel-item relative w-full h-full">
