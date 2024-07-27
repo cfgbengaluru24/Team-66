@@ -7,7 +7,7 @@ export default function Home() {
     <>
       <div data-theme="light">
         <Navbar />
-        <Signup />
+
         <section className="carousel w-full h-screen relative">
           <div id="slide1" className="carousel-item relative w-full h-full">
             <img
@@ -98,7 +98,7 @@ export default function Home() {
           <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
             <div className="flex flex-col md:flex-row items-center">
               <img
-                src="https://img.daisyui.com/images/stock/photo-1523612088671-e9e4c6e4b423.webp"
+                src="https://aspireandglee.com/wp-content/uploads/2021/07/nityaberia-29.jpeg"
                 alt="About Us"
                 className="w-full md:w-1/3 h-60 object-cover rounded-lg mb-6 md:mb-0 md:mr-6"
               />

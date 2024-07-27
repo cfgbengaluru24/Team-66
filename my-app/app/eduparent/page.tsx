@@ -47,7 +47,7 @@ const Page = () => {
               .
             </p>
             <a
-              href="/register-or-login"
+              href="/eduparent/schoolRegister"
               className="bg-blue-600 text-white py-4 px-8 rounded-lg shadow-lg hover:bg-blue-700 transition duration-300 text-lg inline-block text-center"
             >
               Register / Log In
