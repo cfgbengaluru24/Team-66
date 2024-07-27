@@ -6,6 +6,8 @@ import fileUpload from 'express-fileupload';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authenticationRoutes from './routes/auth.js';
+import schoolRoutes from './routes/school.js'
+import volunteerRoutes from './routes/volunteer.js'
 
 dotenv.config();
 
@@ -32,6 +34,8 @@ dbConnect();
 cloudinaryConnect();
 
 app.use('/api/v1/auth', authenticationRoutes);
+app.use('/api/v1/school', schoolRoutes);
+app.use('/api/v1/volunteer', volunteerRoutes);
 
 app.get('/', (req, res) => {
   res.json({

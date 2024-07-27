@@ -13,6 +13,9 @@ const StudentSchema = new mongoose.Schema(
                 ref: "educationalStat",
             },
         ],
+        studentId:{
+            type:"String"
+        },
         familyIncome: {
             type: Number,
             required: true,
