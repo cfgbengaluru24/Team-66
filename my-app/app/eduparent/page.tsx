@@ -26,9 +26,12 @@ const Page = () => {
               higher education. Every donation supports scholarships that
               provide financial assistance to deserving students.
             </p>
-            <button className="bg-blue-600 text-white py-4 px-8 rounded-lg shadow-lg hover:bg-blue-700 transition duration-300 text-lg">
+            <a
+              href="./eduparent/Donor/donateAmount"
+              className="bg-blue-600 text-white py-4 px-8 rounded-lg shadow-lg hover:bg-blue-700 transition duration-300 text-lg"
+            >
               Donate Now
-            </button>
+            </a>
           </div>
 
           <div className="bg-white p-8 rounded-lg shadow-lg">

@@ -1,6 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useCookies } from "react-cookie";
 
 // Function to check password strength
 const checkPasswordStrength = (password: string) => {
@@ -30,10 +33,10 @@ const Signup = () => {
   const [formData, setFormData] = useState({
     schoolName: "",
     phoneNumber: "",
-    countryCode: "+1", // Default country code
     email: "",
-    schoolId: "",
+    schoolRef: "",
     password: "",
+    otp: "",
   });
 
   const [errors, setErrors] = useState({
@@ -44,6 +47,8 @@ const Signup = () => {
 
   const [passwordStrength, setPasswordStrength] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [cookies, setCookie] = useCookies(["authToken"]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -85,35 +90,83 @@ const Signup = () => {
     }
   };
 
+  const handleSendOtp = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8800/api/v1/auth/school/sendOTP",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email: formData.email }),
+        }
+      );
+
+      const data = await response.json();
+      if (data.success) {
+        setIsOtpSent(true);
+        toast.success(
+          "A verification email has been sent to your email address."
+        );
+      } else {
+        toast.error(data.message || "There was an error sending the OTP.");
+      }
+    } catch (error) {
+      toast.error("There was an error connecting to the server.");
+    }
+  };
+
+  const handleSignUp = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8800/api/v1/auth/school/signUp",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Store the token in local storage and cookies
+        localStorage.setItem("authToken", data.token);
+        setCookie("authToken", data.token, {
+          path: "/",
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        }); // expires in 7 days
+
+        toast.success("Registration successful.");
+      } else {
+        toast.error(data.message || "There was an error signing up.");
+      }
+    } catch (error) {
+      toast.error("There was an error connecting to the server.");
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Check for validation errors
     if (errors.schoolName || errors.phoneNumber || errors.password) {
-      alert("Please fix the errors in the form");
+      toast.error("Please fix the errors in the form");
       return;
     }
 
-    // Send signup request to backend
-    const response = await fetch("/api/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      alert("A verification email has been sent to your email address.");
+    if (!isOtpSent) {
+      await handleSendOtp();
     } else {
-      alert("There was an error signing up.");
+      await handleSignUp();
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-200">
+      <ToastContainer />
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-3xl font-extrabold mb-6 text-center text-gray-800">
           School Registration
@@ -132,6 +185,7 @@ const Signup = () => {
               placeholder="Enter your school name"
               value={formData.schoolName}
               onChange={handleChange}
+              disabled={isOtpSent}
             />
             {errors.schoolName && (
               <p className="text-red-500 text-sm mt-1">{errors.schoolName}</p>
@@ -152,6 +206,7 @@ const Signup = () => {
               placeholder="Enter your phone number"
               value={formData.phoneNumber}
               onChange={handleChange}
+              disabled={isOtpSent}
             />
             {errors.phoneNumber && (
               <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>
@@ -168,19 +223,21 @@ const Signup = () => {
               placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
+              disabled={isOtpSent}
             />
           </div>
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-medium mb-2">
-              School ID
+              School Reference ID
             </label>
             <input
               type="text"
-              name="schoolId"
+              name="schoolRef"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter your school ID"
-              value={formData.schoolId}
+              placeholder="Enter your school reference ID"
+              value={formData.schoolRef}
               onChange={handleChange}
+              disabled={isOtpSent}
             />
           </div>
           <div className="mb-6 relative">
@@ -196,6 +253,7 @@ const Signup = () => {
               placeholder="Enter your password"
               value={formData.password}
               onChange={handleChange}
+              disabled={isOtpSent}
             />
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">{errors.password}</p>
@@ -249,17 +307,32 @@ const Signup = () => {
               )}
             </button>
           </div>
+          {isOtpSent && (
+            <div className="mb-6">
+              <label className="block text-gray-700 text-sm font-medium mb-2">
+                OTP
+              </label>
+              <input
+                type="text"
+                name="otp"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter the OTP"
+                value={formData.otp}
+                onChange={handleChange}
+              />
+            </div>
+          )}
           <button
             type="submit"
             className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
           >
-            Register
+            {isOtpSent ? "Complete Registration" : "Send OTP"}
           </button>
         </form>
         <p className="text-center mt-4 text-gray-600">
           Already have an account?{" "}
           <Link
-            href="/my-app/app/components/loginschool/Login"
+            href="/eduparent/schoolLogin"
             className="text-blue-500 hover:underline"
           >
             Login

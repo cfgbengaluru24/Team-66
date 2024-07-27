@@ -1,7 +1,8 @@
 "use client";
 import Footer from "@/app/components/Footer/page";
 import Navbar from "@/app/components/Navbar/page";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
 
 const AddStudentPage = () => {
   const [formData, setFormData] = useState({
@@ -10,13 +11,34 @@ const AddStudentPage = () => {
     studentImage: null as File | null,
     isDisabled: "No",
     approved: "No",
+    grade: "",
+    percentage: "",
+    studentId: "",
   });
 
   const [errors, setErrors] = useState({
     studentName: "",
     familyIncome: "",
     studentImage: "",
+    grade: "",
+    percentage: "",
+    studentId: "",
   });
+
+  const [cookies] = useCookies(["authToken"]);
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    const cookieToken = cookies.authToken;
+    if (cookieToken) {
+      setToken(cookieToken);
+    } else {
+      const storedToken = localStorage.getItem("authToken");
+      if (storedToken) {
+        setToken(storedToken);
+      }
+    }
+  }, [cookies.authToken]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -77,6 +99,30 @@ const AddStudentPage = () => {
               : "Family income should be a number",
           });
           break;
+        case "grade":
+          setErrors({
+            ...errors,
+            grade: /^[A-F]$/.test(value)
+              ? ""
+              : "Grade should be a letter from A to F",
+          });
+          break;
+        case "percentage":
+          setErrors({
+            ...errors,
+            percentage: /^\d+(\.\d+)?$/.test(value)
+              ? ""
+              : "Percentage should be a valid number",
+          });
+          break;
+        case "studentId":
+          setErrors({
+            ...errors,
+            studentId: /^\d+$/.test(value)
+              ? ""
+              : "Student ID should be a number",
+          });
+          break;
         default:
           break;
       }
@@ -87,7 +133,14 @@ const AddStudentPage = () => {
     e.preventDefault();
 
     // Check for validation errors
-    if (errors.studentName || errors.familyIncome || errors.studentImage) {
+    if (
+      errors.studentName ||
+      errors.familyIncome ||
+      errors.studentImage ||
+      errors.grade ||
+      errors.percentage ||
+      errors.studentId
+    ) {
       alert("Please fix the errors in the form");
       return;
     }
@@ -101,27 +154,43 @@ const AddStudentPage = () => {
     }
     data.append("isDisabled", formData.isDisabled);
     data.append("approved", formData.approved);
+    data.append("grade", formData.grade);
+    data.append("percentage", formData.percentage);
+    data.append("studentId", formData.studentId);
 
     // Send data to the backend
-    const response = await fetch("/api/students", {
-      method: "POST",
-      body: data,
-    });
+    try {
+      const response = await fetch(
+        "http://localhost:8800/api/v1/school/addStudent",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token here
+          },
+          body: data,
+        }
+      );
 
-    const result = await response.json();
+      const result = await response.json();
 
-    if (result.success) {
-      alert("Student data has been successfully submitted.");
-      // Reset form
-      setFormData({
-        studentName: "",
-        familyIncome: "",
-        studentImage: null,
-        isDisabled: "No",
-        approved: "No",
-      });
-    } else {
-      alert("There was an error submitting the student data.");
+      if (result.success) {
+        alert("Student data has been successfully submitted.");
+        // Reset form
+        setFormData({
+          studentName: "",
+          familyIncome: "",
+          studentImage: null,
+          isDisabled: "No",
+          approved: "No",
+          grade: "",
+          percentage: "",
+          studentId: "",
+        });
+      } else {
+        alert("There was an error submitting the student data.");
+      }
+    } catch (error) {
+      alert("There was an error connecting to the server.");
     }
   };
 
@@ -207,6 +276,70 @@ const AddStudentPage = () => {
                 </div>
                 <div className="mb-4">
                   <label className="block text-gray-700 font-semibold mb-2">
+                    Grade
+                  </label>
+                  <input
+                    type="text"
+                    name="grade"
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                      errors.grade
+                        ? "focus:ring-red-500 border-red-500"
+                        : "focus:ring-blue-500 border-gray-300"
+                    }`}
+                    placeholder="Enter student grade"
+                    value={formData.grade}
+                    onChange={handleChange}
+                  />
+                  {errors.grade && (
+                    <p className="text-red-500 text-sm mt-1">{errors.grade}</p>
+                  )}
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-semibold mb-2">
+                    Percentage
+                  </label>
+                  <input
+                    type="text"
+                    name="percentage"
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                      errors.percentage
+                        ? "focus:ring-red-500 border-red-500"
+                        : "focus:ring-blue-500 border-gray-300"
+                    }`}
+                    placeholder="Enter student percentage"
+                    value={formData.percentage}
+                    onChange={handleChange}
+                  />
+                  {errors.percentage && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.percentage}
+                    </p>
+                  )}
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-semibold mb-2">
+                    Student ID
+                  </label>
+                  <input
+                    type="text"
+                    name="studentId"
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+                      errors.studentId
+                        ? "focus:ring-red-500 border-red-500"
+                        : "focus:ring-blue-500 border-gray-300"
+                    }`}
+                    placeholder="Enter student ID"
+                    value={formData.studentId}
+                    onChange={handleChange}
+                  />
+                  {errors.studentId && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.studentId}
+                    </p>
+                  )}
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-semibold mb-2">
                     Student Image
                   </label>
                   <input
@@ -243,24 +376,7 @@ const AddStudentPage = () => {
                     </option>
                   </select>
                 </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-semibold mb-2">
-                    Approved
-                  </label>
-                  <select
-                    name="approved"
-                    className="w-full px-3 py-2 text-black border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    value={formData.approved}
-                    onChange={handleChange}
-                  >
-                    <option className="text-black" value="No">
-                      No
-                    </option>
-                    <option className="text-black" value="Yes">
-                      Yes
-                    </option>
-                  </select>
-                </div>
+
                 <button
                   type="submit"
                   className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
