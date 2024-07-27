@@ -1,7 +1,7 @@
 import Login from "./components/loginschool/Login";
 import Navbar from "./components/Navbar/page";
 import Signup from "./components/Signupschool.tsx/signup";
-import AddDetail from "./volunteer/adddetails/adddetails";
+
 
 
 export default function Home() {
@@ -9,7 +9,6 @@ export default function Home() {
     <>
       <div data-theme="light">
         <Navbar />
-        <AddDetail />
         <section className="carousel w-full h-screen relative">
           {/* Carousel Items */}
           <div id="slide1" className="carousel-item relative w-full h-full">
