@@ -3,8 +3,8 @@ import Footer from "@/app/components/Footer/page";
 import Navbar from "@/app/components/Navbar/page";
 import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
-import { ToastContainer, toast } from "react-toastify"; // Import ToastContainer and toast
-import "react-toastify/dist/ReactToastify.css"; // Import CSS for Toastify
+import { ToastContainer, toast } from 'react-toastify'; // Import ToastContainer and toast
+import 'react-toastify/dist/ReactToastify.css'; // Import CSS for Toastify
 
 const AddStudentPage = () => {
   const [formData, setFormData] = useState({
