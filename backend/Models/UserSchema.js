@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 import JWT from "jsonwebtoken";
 
 //schema
-const userSchema = new mongoose.Schema(
+const Schema = new mongoose.Schema(
   {
     firstName: {
       type: String,
