@@ -1,6 +1,6 @@
-import Login from "./components/loginschool/Login";
+
+import Footer from "./components/Footer/page";
 import Navbar from "./components/Navbar/page";
-import Signup from "./components/Signupschool.tsx/signup";
 
 export default function Home() {
   return (
@@ -9,7 +9,6 @@ export default function Home() {
         <Navbar />
         <Signup />
         <section className="carousel w-full h-screen relative">
-          {/* Carousel Items */}
           <div id="slide1" className="carousel-item relative w-full h-full">
             <img
               src="https://www.hkf.ind.in/Images/slider/banner-hope_4.jpg"
@@ -175,34 +174,14 @@ export default function Home() {
                   scholarships to underprivileged children, paving the way for a
                   brighter future.
                 </p>
-                <button className="btn btn-primary">
+                <a href="./eduparent" className="btn btn-primary">
                   Donate / Scholarships
-                </button>
+                </a>
               </div>
             </div>
           </div>
         </section>
-
-        <footer className="footer p-10 bg-neutral text-neutral-content">
-          <div>
-            <span className="footer-title">Services</span>
-            <a className="link link-hover">Clothing Donation</a>
-            <a className="link link-hover">Education Funding</a>
-            <a className="link link-hover">Volunteer</a>
-          </div>
-          <div>
-            <span className="footer-title">Company</span>
-            <a className="link link-hover">About us</a>
-            <a className="link link-hover">Contact</a>
-            <a className="link link-hover">Jobs</a>
-          </div>
-          <div>
-            <span className="footer-title">Legal</span>
-            <a className="link link-hover">Terms of use</a>
-            <a className="link link-hover">Privacy policy</a>
-            <a className="link link-hover">Cookie policy</a>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </>
   );
