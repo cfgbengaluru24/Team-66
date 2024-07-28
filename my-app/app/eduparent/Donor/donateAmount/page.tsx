@@ -104,7 +104,7 @@ const DonorForm = () => {
               </li>
               <li>
                 <a
-                  href="/eduparent/viewStudents"
+                  href="/eduparent/Donor/previousDonations"
                   className="block py-2 px-4 bg-gray-700 rounded hover:bg-gray-600 transition duration-300"
                 >
                   Previous Donations

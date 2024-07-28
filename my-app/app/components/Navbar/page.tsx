@@ -1,4 +1,5 @@
 import React from "react";
+import { FaWhatsapp } from "react-icons/fa";
 
 const Navbar = () => {
   return (
@@ -45,7 +46,7 @@ const Navbar = () => {
           Aspire & Glee
         </a>
       </div>
-      <div className="navbar-end">
+      <div className="navbar-end flex items-center">
         <button className="btn btn-ghost btn-circle">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -81,6 +82,16 @@ const Navbar = () => {
             <span className="badge badge-xs badge-primary indicator-item"></span>
           </div>
         </button>
+        <a
+          href="https://wa.me/+14155238886" // Replace with your WhatsApp number
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn btn-ghost btn-circle"
+        >
+          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white hover:bg-green-600 transition duration-300">
+            <FaWhatsapp className="w-5 h-5" />
+          </div>
+        </a>
       </div>
     </div>
   );

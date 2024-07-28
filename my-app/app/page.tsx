@@ -12,7 +12,7 @@ export default function Home() {
         <section className="carousel w-full h-screen relative">
           <div id="slide1" className="carousel-item relative w-full h-full">
             <img
-              src="https://www.hkf.ind.in/Images/slider/banner-hope_4.jpg"
+              src="https://images.unsplash.com/photo-1524069290683-0457abfe42c3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               className="w-full h-full object-cover"
             />
             <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between z-10">
@@ -32,7 +32,7 @@ export default function Home() {
           </div>
           <div id="slide2" className="carousel-item relative w-full h-full">
             <img
-              src="https://img.daisyui.com/images/stock/photo-1609621838510-5ad474b7d25d.webp"
+              src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               className="w-full h-full object-cover"
             />
             <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between z-10">
@@ -52,7 +52,7 @@ export default function Home() {
           </div>
           <div id="slide3" className="carousel-item relative w-full h-full">
             <img
-              src="https://img.daisyui.com/images/stock/photo-1414694762283-acccc27bca85.webp"
+              src="https://images.unsplash.com/photo-1497486751825-1233686d5d80?q=80&w=2013&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               className="w-full h-full object-cover"
             />
             <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between z-10">
@@ -72,7 +72,7 @@ export default function Home() {
           </div>
           <div id="slide4" className="carousel-item relative w-full h-full">
             <img
-              src="https://img.daisyui.com/images/stock/photo-1665553365602-b2fb8e5d1707.webp"
+              src="https://images.unsplash.com/photo-1569173675610-42c361a86e37?q=80&w=2067&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               className="w-full h-full object-cover"
             />
             <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between z-10">
@@ -99,7 +99,7 @@ export default function Home() {
           <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
             <div className="flex flex-col md:flex-row items-center">
               <img
-                src="https://aspireandglee.com/wp-content/uploads/2021/07/nityaberia-29.jpeg"
+                src="https://images.unsplash.com/photo-1569173675610-42c361a86e37?q=80&w=2067&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                 alt="About Us"
                 className="w-full md:w-1/3 h-60 object-cover rounded-lg mb-6 md:mb-0 md:mr-6"
               />
@@ -108,12 +108,12 @@ export default function Home() {
                   Our Mission
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  At [Your Organization Name], our mission is to make a
-                  difference in the world by supporting causes that matter. We
-                  are dedicated to providing essential resources, fostering
-                  education, and creating opportunities for those in need. Our
-                  commitment is driven by a passion to uplift communities and
-                  empower individuals for a better future.
+                  At Aspire&Glee, our mission is to make a difference in the
+                  world by supporting causes that matter. We are dedicated to
+                  providing essential resources, fostering education, and
+                  creating opportunities for those in need. Our commitment is
+                  driven by a passion to uplift communities and empower
+                  individuals for a better future.
                 </p>
                 <p className="text-gray-600">
                   Founded in [Year], we have been working tirelessly to create
