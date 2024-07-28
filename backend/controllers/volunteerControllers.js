@@ -12,12 +12,19 @@ export const addData = async (req, res) => {
         }
 
         const studentDetails = await student.findOne({ studentId });
+        if (!studentDetails) {
+          return res.status(500).json({
+            success: false,
+            message: "Student not found",
+          });
+        }
 
         const educationDetails = await educationalStat.create({
-            studentId: studentDetails._id,
-            grade,
-            percentage,
+          studentId: studentDetails._id,
+          grade,
+          percentage,
         });
+        console.log(educationDetails);
 
         studentDetails.educationalStat.push(educationDetails._id);
         await studentDetails.save();

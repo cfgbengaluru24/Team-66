@@ -1,8 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useCookies } from "react-cookie";
 
-const LoginDonor = () => {
+const EduParentLogin = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -14,8 +17,9 @@ const LoginDonor = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [cookies, setCookie] = useCookies(["authToken"]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -35,9 +39,10 @@ const LoginDonor = () => {
       case "password":
         setErrors({
           ...errors,
-          password: value.length < 8
-            ? "Password must be at least 8 characters long"
-            : "",
+          password:
+            value.length < 8
+              ? "Password must be at least 8 characters long"
+              : "",
         });
         break;
       default:
@@ -45,36 +50,53 @@ const LoginDonor = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
 
     // Check for validation errors
     if (errors.email || errors.password) {
-      alert("Please fix the errors in the form");
+      toast.error("Please fix the errors in the form");
       return;
     }
 
     // Send login request to backend
-    const response = await fetch("/api/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const response = await fetch(
+        "http://localhost:8800/api/v1/auth/eduParent/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (data.success) {
-      alert("Login successful");
-      // Redirect to dashboard or home page
-    } else {
-      alert("There was an error logging in.");
+      if (data.success) {
+        // Store the token in cookies
+        setCookie("authToken", data.token, {
+          path: "/",
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // expires in 7 days
+        });
+        toast.success("Login successful");
+
+        setTimeout(() => {
+          window.location.href = "/eduparent/Donor/donateAmount"; // Redirect to the desired page
+        }, 3000);
+        // Redirect to dashboard or home page
+      } else {
+        toast.error(data.message || "There was an error logging in.");
+      }
+    } catch (error) {
+      toast.error("There was an error connecting to the server.");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <ToastContainer />
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
         <form onSubmit={handleSubmit}>
@@ -156,8 +178,10 @@ const LoginDonor = () => {
             >
               Login
             </button>
-            <Link href="/signup" className="text-blue-500 hover:underline">
-              Don't have an account?
+            <Link href="/eduParent/signup" legacyBehavior>
+              <a className="text-blue-500 hover:underline">
+                Don't have an account?
+              </a>
             </Link>
           </div>
         </form>
@@ -166,4 +190,4 @@ const LoginDonor = () => {
   );
 };
 
-export default LoginDonor;
+export default EduParentLogin;

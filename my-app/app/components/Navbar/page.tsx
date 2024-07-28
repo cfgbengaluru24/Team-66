@@ -29,10 +29,13 @@ const Navbar = () => {
               <a href="/">Homepage</a>
             </li>
             <li>
-              <a>Portfolio</a>
+              <a href="/eduparent/Donor/donorSignUp">EduParent</a>
             </li>
             <li>
               <a>About</a>
+            </li>
+            <li>
+              <a href="/volunteer/signupvolunteer">Volunteer</a>
             </li>
           </ul>
         </div>

@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useCookies } from "react-cookie";
 
 // Function to check password strength
-const checkPasswordStrength = (password: any) => {
+const checkPasswordStrength = (password: string) => {
   const strength = {
     length: password.length >= 8,
     uppercase: /[A-Z]/.test(password),
@@ -29,19 +29,17 @@ const checkPasswordStrength = (password: any) => {
   }
 };
 
-const EduParentSignup = () => {
+const VolunteerSignup = () => {
   const [formData, setFormData] = useState({
-    parentName: "",
-    phoneNumber: "",
-    // Default country code
+    name: "",
     email: "",
     password: "",
     otp: "",
   });
 
   const [errors, setErrors] = useState({
-    parentName: "",
-    phoneNumber: "",
+    name: "",
+    email: "",
     password: "",
   });
 
@@ -50,7 +48,7 @@ const EduParentSignup = () => {
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [cookies, setCookie] = useCookies(["authToken"]);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -59,20 +57,12 @@ const EduParentSignup = () => {
 
     // Validate input
     switch (name) {
-      case "parentName":
+      case "name":
         setErrors({
           ...errors,
-          parentName: /^[a-zA-Z\s]*$/.test(value)
+          name: /^[a-zA-Z\s]*$/.test(value)
             ? ""
             : "Name should only contain letters",
-        });
-        break;
-      case "phoneNumber":
-        setErrors({
-          ...errors,
-          phoneNumber: /^\d{10}$/.test(value)
-            ? ""
-            : "Phone number must be exactly 10 digits",
         });
         break;
       case "password":
@@ -93,7 +83,7 @@ const EduParentSignup = () => {
   const handleSendOtp = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8800/api/v1/auth/eduParent/sendOTP",
+        "http://localhost:8800/api/v1/auth/volunteer/sendOTP",
         {
           method: "POST",
           headers: {
@@ -121,7 +111,7 @@ const EduParentSignup = () => {
   const handleSignUp = async () => {
     try {
       const response = await fetch(
-        "http://localhost:8800/api/v1/auth/eduParent/signUp",
+        "http://localhost:8800/api/v1/auth/volunteer/signUp",
         {
           method: "POST",
           headers: {
@@ -142,9 +132,6 @@ const EduParentSignup = () => {
         });
 
         toast.success("Registration successful.");
-        setTimeout(() => {
-          window.location.href = "/eduparent/Donor/donateAmount"; // Redirect to the desired page
-        }, 3000);
       } else {
         toast.error(data.message || "There was an error signing up.");
       }
@@ -153,10 +140,10 @@ const EduParentSignup = () => {
     }
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (errors.parentName || errors.phoneNumber || errors.password) {
+    if (errors.name || errors.password) {
       toast.error("Please fix the errors in the form");
       return;
     }
@@ -173,49 +160,26 @@ const EduParentSignup = () => {
       <ToastContainer />
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-3xl font-extrabold mb-6 text-center text-gray-800">
-          Parent Signup
+          Volunteer Signup
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
             <label className="block text-gray-700 text-sm font-medium mb-2">
-              Parent Name
+              Name
             </label>
             <input
               type="text"
-              name="parentName"
+              name="name"
               className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 ${
-                errors.parentName ? "focus:ring-red-500" : "focus:ring-blue-500"
+                errors.name ? "focus:ring-red-500" : "focus:ring-blue-500"
               }`}
               placeholder="Enter your name"
-              value={formData.parentName}
+              value={formData.name}
               onChange={handleChange}
               disabled={isOtpSent}
             />
-            {errors.parentName && (
-              <p className="text-red-500 text-sm mt-1">{errors.parentName}</p>
-            )}
-          </div>
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-medium mb-2">
-              Phone Number
-            </label>
-            <div className="flex">
-              <input
-                type="tel"
-                name="phoneNumber"
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
-                  errors.phoneNumber
-                    ? "focus:ring-red-500"
-                    : "focus:ring-blue-500"
-                }`}
-                placeholder="Enter your phone number"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                disabled={isOtpSent}
-              />
-            </div>
-            {errors.phoneNumber && (
-              <p className="text-red-500 text-sm">{errors.phoneNumber}</p>
+            {errors.name && (
+              <p className="text-red-500 text-sm mt-1">{errors.name}</p>
             )}
           </div>
           <div className="mb-6">
@@ -232,7 +196,6 @@ const EduParentSignup = () => {
               disabled={isOtpSent}
             />
           </div>
-
           <div className="mb-6 relative">
             <label className="block text-gray-700 text-sm font-medium mb-2">
               Password
@@ -265,9 +228,39 @@ const EduParentSignup = () => {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute top-1/2 right-3 transform -translate-y-1/2"
+              className="absolute inset-y-0 right-0 flex items-center pr-3"
             >
-              {showPassword ? "Hide" : "Show"}
+              {showPassword ? (
+                <svg
+                  className="w-5 h-5 text-gray-500"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M3.1 4.9a10.07 10.07 0 000 14.2M21 12a9.96 9.96 0 00-5-8.7M4.3 9.3a9.96 9.96 0 000 5.4M12 12a6 6 0 016-6M6 12a6 6 0 016-6M21 12a9.96 9.96 0 01-5 8.7M12 12a6 6 0 01-6-6M9.4 16.6a6 6 0 01-3.4-3.4"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="w-5 h-5 text-gray-500"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M14.828 14.828a4 4 0 000-5.656M9.172 9.172a4 4 0 015.656 5.656M12 12a6 6 0 00-6 6M6 12a6 6 0 016-6M12 12a6 6 0 016-6M21 12a9.96 9.96 0 00-5-8.7M3.1 4.9a10.07"
+                  />
+                </svg>
+              )}
             </button>
           </div>
           {isOtpSent && (
@@ -285,24 +278,25 @@ const EduParentSignup = () => {
               />
             </div>
           )}
-          <div className="mb-6">
-            <button
-              type="submit"
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              {isOtpSent ? "Verify OTP and Sign Up" : "Send OTP"}
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
+          >
+            {isOtpSent ? "Complete Registration" : "Send OTP"}
+          </button>
         </form>
-        <div className="text-center">
+        <p className="text-center mt-4 text-gray-600">
           Already have an account?{" "}
-          <Link href="/eduParent/login" legacyBehavior>
-            <a className="text-blue-600 hover:underline">Login</a>
+          <Link
+            href="/volunteer/loginvolunteer"
+            className="text-blue-500 hover:underline"
+          >
+            Login
           </Link>
-        </div>
+        </p>
       </div>
     </div>
   );
 };
 
-export default EduParentSignup;
+export default VolunteerSignup;

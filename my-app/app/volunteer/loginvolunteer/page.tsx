@@ -1,16 +1,22 @@
 "use client";
 import React, { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useCookies } from "react-cookie";
 
 const LoginVolunteer = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [name, setName] = useState("");
   const [passwordStrength, setPasswordStrength] = useState<string>("");
+  const [cookies, setCookie] = useCookies(["authToken"]);
 
   // Password strength checker
   const checkPasswordStrength = (password: string) => {
-    if (password.length > 8 && /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+    if (
+      password.length > 8 &&
+      /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)
+    ) {
       return "Strong";
     } else if (password.length > 5 && /(?=.*[a-z])(?=.*\d)/.test(password)) {
       return "Medium";
@@ -25,43 +31,54 @@ const LoginVolunteer = () => {
     setPasswordStrength(checkPasswordStrength(newPassword));
   };
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newName = e.target.value;
-    // Allow only alphabetic characters and spaces
-    if (/^[a-zA-Z\s]*$/.test(newName)) {
-      setName(newName);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle the login logic here (e.g., API call)
-    console.log("Name:", name);
-    console.log("Email:", email);
-    console.log("Password:", password);
+
+    try {
+      const response = await fetch(
+        "http://localhost:8800/api/v1/auth/volunteer/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Store the token in local storage and cookies
+        localStorage.setItem("authToken", data.token);
+        setCookie("authToken", data.token, {
+          path: "/",
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // expires in 7 days
+        });
+        setTimeout(() => {
+          window.location.href = "/volunteer/adddetails"; // Redirect to the desired page
+        }, 3000);
+
+        toast.success("Login successful.");
+      } else {
+        toast.error(data.message || "There was an error logging in.");
+      }
+    } catch (error) {
+      toast.error("There was an error connecting to the server.");
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex items-center justify-center">
+      <ToastContainer />
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6 text-center">Volunteer Login</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={handleNameChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              required
-              placeholder="Enter your name"
-            />
-          </div>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -75,7 +92,10 @@ const LoginVolunteer = () => {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               Password
             </label>
             <div className="relative">
@@ -94,9 +114,13 @@ const LoginVolunteer = () => {
                 className="absolute inset-y-0 right-0 flex items-center px-3"
               >
                 {showPassword ? (
-                  <span role="img" aria-label="Hide" className="text-gray-500">🙈</span>
+                  <span role="img" aria-label="Hide" className="text-gray-500">
+                    🙈
+                  </span>
                 ) : (
-                  <span role="img" aria-label="Show" className="text-gray-500">👁️</span>
+                  <span role="img" aria-label="Show" className="text-gray-500">
+                    👁️
+                  </span>
                 )}
               </button>
             </div>
