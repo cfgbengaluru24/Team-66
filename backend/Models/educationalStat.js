@@ -21,4 +21,4 @@ const EducationStatSchema = new mongoose.Schema(
     }
 );
 
-export default mongoose.model("eduationalStat", EducationStatSchema);
+export default mongoose.model("educationalStat", EducationStatSchema);

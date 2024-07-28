@@ -13,6 +13,9 @@ const StudentSchema = new mongoose.Schema(
                 ref: "educationalStat",
             },
         ],
+        studentId:{
+            type:"String"
+        },
         familyIncome: {
             type: Number,
             required: true,
@@ -28,6 +31,11 @@ const StudentSchema = new mongoose.Schema(
         approved:{
             type:String,
             enum:["Yes","No"]
+        },
+        scholarShip:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"eduParent",
+            default:null,
         }
     },
     {
