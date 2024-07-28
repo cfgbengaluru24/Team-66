@@ -1,4 +1,4 @@
-import Inventory from "./components/inventory/inventory";
+import Inventory from "./clothes/inventory/inventory";
 import Login from "./components/loginschool/Login";
 import Navbar from "./components/Navbar/page";
 import Signup from "./components/Signupschool.tsx/signup";

@@ -88,7 +88,7 @@ const ClothingDonorPage = () => {
                 htmlFor="clothingType"
                 className="block text-sm font-semibold text-gray-700"
               >
-                Clothing Type
+                Apparel 
               </label>
               <input
                 type="text"
