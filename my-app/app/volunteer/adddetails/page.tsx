@@ -109,8 +109,8 @@ const AddDetail = () => {
   return (
     <div>
       <Navbar />
-      <div className="min-h-screen bg-gray-200 flex items-center justify-center">
-        <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
+      <div className="min-h-screen bg-gray-200 flex flex-col items-center justify-center">
+        <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden ">
           <div className="bg-blue-600 text-black px-6 py-4">
             <h2 className="text-3xl font-bold">Add Student Details</h2>
           </div>
@@ -129,11 +129,10 @@ const AddDetail = () => {
                   name="studentId"
                   value={formData.studentId}
                   onChange={handleChange}
-                  className={`text-black mt-1 block w-full px-4 py-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 ${
-                    errors.studentId
+                  className={`text-black mt-1 block w-full px-4 py-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 ${errors.studentId
                       ? "focus:ring-red-500 border-red-500"
                       : "focus:ring-blue-500 border-gray-300"
-                  }`}
+                    }`}
                   required
                 />
                 {errors.studentId && (
@@ -155,11 +154,10 @@ const AddDetail = () => {
                   name="grade"
                   value={formData.grade}
                   onChange={handleChange}
-                  className={`text-black mt-1 block w-full px-4 py-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 ${
-                    errors.grade
+                  className={`text-black mt-1 block w-full px-4 py-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 ${errors.grade
                       ? "focus:ring-red-500 border-red-500"
                       : "focus:ring-blue-500 border-gray-300"
-                  }`}
+                    }`}
                   required
                 />
                 {errors.grade && (
@@ -179,11 +177,10 @@ const AddDetail = () => {
                   name="percentage"
                   value={formData.percentage}
                   onChange={handleChange}
-                  className={`text-black mt-1 block w-full px-4 py-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 ${
-                    errors.percentage
+                  className={`text-black mt-1 block w-full px-4 py-3 border rounded-md shadow-sm focus:outline-none focus:ring-2 ${errors.percentage
                       ? "focus:ring-red-500 border-red-500"
                       : "focus:ring-blue-500 border-gray-300"
-                  }`}
+                    }`}
                   required
                 />
                 {errors.percentage && (
@@ -204,6 +201,15 @@ const AddDetail = () => {
           </form>
           <ToastContainer /> {/* Add ToastContainer here */}
         </div>
+        <form action="http://localhost:5000/upload" method="get">
+
+          <button
+            type="submit"
+            className="bg-blue-600 mt-20 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500 transition duration-300 ease-in-out"
+          >
+            Upload via PDF
+          </button>
+        </form>
       </div>
     </div>
   );
